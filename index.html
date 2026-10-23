@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cloudii・technologies</title>
+  <meta name="description" content="cloudii・technologies は、クラウドネイティブな業務システムとプロダクト開発で企業の変革を支えるソフトウェア開発会社です。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f4f7fb;
+      --text: #0f1b2d;
+      --text-muted: #5a6b82;
+      --border: #e2e8f0;
+      --primary: #2563eb;
+      --primary-strong: #1d4ed8;
+      --accent: #06b6d4;
+      --card: #ffffff;
+      --hero-from: #eff6ff;
+      --hero-to: #ecfeff;
+      --shadow: 0 10px 30px rgba(15, 27, 45, 0.08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0b1220;
+        --bg-soft: #111a2e;
+        --text: #e6edf7;
+        --text-muted: #9aabc3;
+        --border: #1f2b44;
+        --primary: #60a5fa;
+        --primary-strong: #93c5fd;
+        --accent: #22d3ee;
+        --card: #131d33;
+        --hero-from: #0f1a33;
+        --hero-to: #0a2230;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+    body {
+      font-family: "Noto Sans JP", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+
+    .container { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+    @media (min-width: 768px) { .container { padding: 0 32px; } }
+
+    section { padding: 96px 0; }
+    .section-label {
+      font-family: "Inter", sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: var(--primary);
+      text-transform: uppercase;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+      font-weight: 900;
+      line-height: 1.4;
+      margin: 8px 0 16px;
+    }
+    .section-lead { color: var(--text-muted); max-width: 640px; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-family: "Inter", sans-serif; font-weight: 800; font-size: 1.1rem; }
+    .logo-mark {
+      width: 32px; height: 32px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: grid; place-items: center;
+    }
+    .nav-links { display: none; gap: 32px; font-size: 0.9rem; font-weight: 500; }
+    .nav-links a { color: var(--text-muted); transition: color .2s; }
+    .nav-links a:hover { color: var(--primary); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 24px; border-radius: 999px; font-weight: 700; font-size: 0.95rem;
+      transition: transform .2s, background .2s, box-shadow .2s; border: none; cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 6px 20px color-mix(in srgb, var(--primary) 35%, transparent); }
+    .btn-primary:hover { background: var(--primary-strong); transform: translateY(-2px); }
+    .btn-ghost { border: 1px solid var(--border); background: var(--card); }
+    .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+    .nav .btn { display: none; padding: 8px 20px; font-size: 0.85rem; }
+    .menu-toggle { background: none; border: none; color: var(--text); cursor: pointer; padding: 8px; }
+    .mobile-menu { display: none; border-top: 1px solid var(--border); padding: 8px 16px 16px; }
+    .mobile-menu.open { display: block; }
+    .mobile-menu a { display: block; padding: 12px 0; border-bottom: 1px solid var(--border); font-weight: 500; }
+    @media (min-width: 900px) {
+      .nav-links, .nav .btn { display: flex; }
+      .menu-toggle, .mobile-menu, .mobile-menu.open { display: none; }
+    }
+
+    /* Announcement bar */
+    .announce { background: var(--bg-soft); border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .announce.hidden { display: none; }
+    .announce-inner { display: flex; align-items: center; gap: 12px; min-height: 44px; }
+    .announce-label {
+      flex-shrink: 0; font-size: 0.72rem; font-weight: 700; padding: 2px 10px; border-radius: 6px;
+      background: var(--primary); color: #fff;
+    }
+    .announce-item { flex: 1; min-width: 0; display: flex; gap: 12px; align-items: center; transition: opacity .3s; }
+    .announce-item.fade { opacity: 0; }
+    .announce-date { flex-shrink: 0; font-family: "Inter", sans-serif; color: var(--text-muted); display: none; }
+    @media (min-width: 640px) { .announce-date { display: inline; } }
+    .announce-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+    .announce-item:hover .announce-title { color: var(--primary); }
+    .announce-more { flex-shrink: 0; color: var(--primary); font-weight: 700; display: none; }
+    @media (min-width: 640px) { .announce-more { display: inline; } }
+    .announce-close { flex-shrink: 0; background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; line-height: 0; }
+    .announce-close:hover { color: var(--text); }
+
+    /* Hero */
+    .hero {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
+      padding: 96px 0 112px;
+    }
+    .hero::before, .hero::after {
+      content: ""; position: absolute; border-radius: 50%; filter: blur(60px); opacity: .45;
+    }
+    .hero::before { width: 420px; height: 420px; background: var(--primary); top: -160px; right: -120px; }
+    .hero::after { width: 320px; height: 320px; background: var(--accent); bottom: -160px; left: -100px; }
+    .hero-inner { position: relative; z-index: 1; display: grid; gap: 48px; align-items: center; }
+    @media (min-width: 900px) { .hero-inner { grid-template-columns: 1.1fr 1fr; } }
+    .hero-badge {
+      display: inline-block; padding: 6px 14px; border-radius: 999px;
+      background: var(--card); border: 1px solid var(--border);
+      font-size: 0.8rem; font-weight: 500; color: var(--primary); margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(2rem, 5.5vw, 3.4rem); font-weight: 900; line-height: 1.3; letter-spacing: -0.01em; }
+    .gradient-text {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero p { color: var(--text-muted); margin: 24px 0 36px; font-size: 1.05rem; max-width: 520px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    .code-window {
+      background: #0f172a; color: #e2e8f0; border-radius: 16px; box-shadow: var(--shadow);
+      font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: 0.85rem; line-height: 1.7;
+      overflow: hidden; border: 1px solid #1e293b;
+    }
+    .code-bar { display: flex; gap: 6px; padding: 12px 16px; background: #1e293b; }
+    .code-bar span { width: 11px; height: 11px; border-radius: 50%; }
+    .code-body { padding: 20px; overflow-x: auto; white-space: pre; }
+    .c-k { color: #c084fc; } .c-s { color: #86efac; } .c-f { color: #60a5fa; } .c-c { color: #64748b; }
+
+    /* About */
+    .about-grid { display: grid; gap: 48px; margin-top: 48px; }
+    @media (min-width: 900px) { .about-grid { grid-template-columns: 1fr 1fr; } }
+    .mission {
+      padding: 40px; border-radius: 20px; background: var(--bg-soft); border: 1px solid var(--border);
+    }
+    .mission h3 { font-size: 1.4rem; font-weight: 900; line-height: 1.5; margin-bottom: 16px; }
+    .mission p { color: var(--text-muted); }
+    .values { display: grid; gap: 20px; }
+    .value { display: flex; gap: 16px; }
+    .value-num {
+      flex-shrink: 0; font-family: "Inter", sans-serif; font-weight: 800; font-size: 1.1rem;
+      width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+      background: color-mix(in srgb, var(--primary) 12%, transparent); color: var(--primary);
+    }
+    .value h4 { font-size: 1.05rem; font-weight: 700; }
+    .value p { color: var(--text-muted); font-size: 0.92rem; }
+
+    /* Services */
+    .services { background: var(--bg-soft); }
+    .card-grid { display: grid; gap: 24px; margin-top: 48px; }
+    @media (min-width: 640px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1000px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 32px;
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--primary) 40%, var(--border)); }
+    .card-icon {
+      width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 20px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 15%, transparent), color-mix(in srgb, var(--accent) 15%, transparent));
+      color: var(--primary);
+    }
+    .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+    .card p { color: var(--text-muted); font-size: 0.92rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+    .tag { font-size: 0.72rem; padding: 3px 10px; border-radius: 999px; background: var(--bg-soft); color: var(--text-muted); border: 1px solid var(--border); }
+
+    /* Stats */
+    .stats { padding: 72px 0; background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; text-align: center; }
+    @media (min-width: 800px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+    .stat-num { font-family: "Inter", sans-serif; font-weight: 800; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; }
+    .stat-num small { font-size: 0.5em; margin-left: 2px; }
+    .stat-label { font-size: 0.85rem; opacity: .9; margin-top: 6px; }
+
+    /* Works */
+    .works-grid { display: grid; gap: 24px; margin-top: 48px; }
+    @media (min-width: 800px) { .works-grid { grid-template-columns: repeat(3, 1fr); } }
+    .work { border-radius: 18px; overflow: hidden; border: 1px solid var(--border); background: var(--card); transition: transform .25s, box-shadow .25s; }
+    .work:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .work-thumb { height: 170px; display: grid; place-items: center; color: #fff; }
+    .work-thumb svg { opacity: .9; }
+    .work-body { padding: 24px; }
+    .work-cat { font-size: 0.75rem; font-weight: 700; color: var(--primary); }
+    .work h3 { font-size: 1.05rem; font-weight: 700; margin: 4px 0 8px; line-height: 1.5; }
+    .work p { color: var(--text-muted); font-size: 0.88rem; }
+
+    /* Flow */
+    .flow { background: var(--bg-soft); }
+    .flow-steps { display: grid; gap: 16px; margin-top: 48px; counter-reset: step; }
+    @media (min-width: 900px) { .flow-steps { grid-template-columns: repeat(5, 1fr); } }
+    .step { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; position: relative; }
+    .step::before {
+      counter-increment: step; content: "STEP " counter(step, decimal-leading-zero);
+      font-family: "Inter", sans-serif; font-weight: 800; font-size: 0.75rem; letter-spacing: .1em; color: var(--accent);
+    }
+    .step h4 { font-size: 1rem; font-weight: 700; margin: 6px 0; }
+    .step p { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* News */
+    .news-list { margin-top: 40px; border-top: 1px solid var(--border); }
+    .news-item { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; padding: 20px 4px; border-bottom: 1px solid var(--border); transition: background .2s; }
+    .news-item:hover { background: var(--bg-soft); }
+    .news-date { font-family: "Inter", sans-serif; font-size: 0.85rem; color: var(--text-muted); min-width: 92px; }
+    .news-tag { font-size: 0.72rem; font-weight: 700; padding: 2px 10px; border-radius: 6px; background: color-mix(in srgb, var(--primary) 12%, transparent); color: var(--primary); }
+    .news-title { flex: 1 1 100%; font-weight: 500; }
+    @media (min-width: 700px) { .news-title { flex: 1; } }
+
+    /* Contact */
+    .contact { background: var(--bg-soft); }
+    .contact-grid { display: grid; gap: 48px; margin-top: 16px; }
+    @media (min-width: 900px) { .contact-grid { grid-template-columns: 1fr 1.2fr; } }
+    .company-info dl { display: grid; grid-template-columns: 96px 1fr; gap: 14px 16px; margin-top: 32px; font-size: 0.92rem; }
+    .company-info dt { color: var(--text-muted); font-weight: 500; }
+    form { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 32px; display: grid; gap: 18px; box-shadow: var(--shadow); }
+    label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
+    label .req { color: #ef4444; margin-left: 4px; font-size: 0.75rem; }
+    input, select, textarea {
+      width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); font-family: inherit; font-size: 0.95rem;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent); }
+    textarea { min-height: 140px; resize: vertical; }
+    .form-row { display: grid; gap: 18px; }
+    @media (min-width: 600px) { .form-row { grid-template-columns: 1fr 1fr; } }
+    .form-message { display: none; padding: 14px; border-radius: 10px; background: color-mix(in srgb, #10b981 15%, transparent); color: #059669; font-weight: 500; font-size: 0.9rem; }
+    .form-message.show { display: block; }
+
+    /* Footer */
+    footer { padding: 48px 0 32px; border-top: 1px solid var(--border); }
+    .footer-inner { display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 20px; font-size: 0.85rem; color: var(--text-muted); }
+    .footer-links a:hover { color: var(--primary); }
+    .copyright { margin-top: 32px; font-size: 0.8rem; color: var(--text-muted); text-align: center; }
+
+    /* Reveal animation */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <a href="#top" class="logo" aria-label="cloudii・technologies トップへ">
+        <span class="logo-mark">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H8a5 5 0 1 1 1.6-9.74A6 6 0 0 1 21 11.5 3.5 3.5 0 0 1 17.5 19z"/></svg>
+        </span>
+        cloudii・technologies
+      </a>
+      <nav class="nav-links" aria-label="メインナビゲーション">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#works">Works</a>
+        <a href="#flow">Flow</a>
+        <a href="#news">News</a>
+      </nav>
+      <a href="#contact" class="btn btn-primary">お問い合わせ</a>
+      <button class="menu-toggle" aria-label="メニューを開く" aria-expanded="false" id="menuToggle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#works">Works</a>
+      <a href="#flow">Flow</a>
+      <a href="#news">News</a>
+      <a href="#contact">お問い合わせ</a>
+    </div>
+  </header>
+
+  <!-- Announcement bar -->
+  <div class="announce" id="announce" role="region" aria-label="お知らせ">
+    <div class="container announce-inner">
+      <span class="announce-label">お知らせ</span>
+      <a href="#news" class="announce-item" id="announceItem" aria-live="polite">
+        <span class="announce-date" id="announceDate">2026.10.15</span>
+        <span class="announce-title" id="announceTitle">生成AI導入支援パッケージ「cloudii AI Start」の提供を開始しました</span>
+      </a>
+      <a href="#news" class="announce-more">一覧へ →</a>
+      <button class="announce-close" id="announceClose" aria-label="お知らせを閉じる">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="reveal">
+          <span class="hero-badge">☁ クラウドネイティブ開発のプロフェッショナル</span>
+          <h1>テクノロジーで、<br><span class="gradient-text">ビジネスの未来</span>を<br>かたちにする。</h1>
+          <p>cloudii・technologies は、企画・設計から開発・運用まで一気通貫で伴走するソフトウェア開発会社です。クラウドとAIの力で、お客様の「やりたい」を最速で実現します。</p>
+          <div class="hero-actions">
+            <a href="#contact" class="btn btn-primary">無料で相談する →</a>
+            <a href="#services" class="btn btn-ghost">サービスを見る</a>
+          </div>
+        </div>
+        <div class="code-window reveal" aria-hidden="true">
+          <div class="code-bar"><span style="background:#ef4444"></span><span style="background:#f59e0b"></span><span style="background:#22c55e"></span></div>
+<div class="code-body"><span class="c-c">// cloudii.ts</span>
+<span class="c-k">import</span> { Team } <span class="c-k">from</span> <span class="c-s">"@cloudii/core"</span>;
+
+<span class="c-k">const</span> project = <span class="c-k">await</span> Team.<span class="c-f">start</span>({
+  client: <span class="c-s">"あなたの会社"</span>,
+  goal:   <span class="c-s">"DXの実現"</span>,
+  stack:  [<span class="c-s">"AWS"</span>, <span class="c-s">"Next.js"</span>, <span class="c-s">"Go"</span>],
+});
+
+<span class="c-k">await</span> project.<span class="c-f">deliver</span>();
+<span class="c-c">// ✔ Success — 価値を、継続的に。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <div class="container">
+        <div class="reveal">
+          <p class="section-label">About us</p>
+          <h2 class="section-title">私たちについて</h2>
+          <p class="section-lead">2015年の創業以来、スタートアップから大企業まで、200社以上のデジタル変革をご支援してきました。</p>
+        </div>
+        <div class="about-grid">
+          <div class="mission reveal">
+            <p class="section-label">Mission</p>
+            <h3>「つくる」をもっと自由に。<br>すべての企業に、最高の開発チームを。</h3>
+            <p>優れたソフトウェアは、一部の大企業だけのものではありません。私たちは高い技術力と柔軟なチーム体制で、規模や業界を問わずあらゆる企業が挑戦できる世界をつくります。</p>
+          </div>
+          <div class="values reveal">
+            <div class="value">
+              <span class="value-num">01</span>
+              <div><h4>Client First</h4><p>技術はあくまで手段。お客様のビジネス成果を第一に考え、本当に必要なものを提案します。</p></div>
+            </div>
+            <div class="value">
+              <span class="value-num">02</span>
+              <div><h4>Speed &amp; Quality</h4><p>アジャイル開発と自動テスト・CI/CDにより、スピードと品質を両立させます。</p></div>
+            </div>
+            <div class="value">
+              <span class="value-num">03</span>
+              <div><h4>Keep Learning</h4><p>新しい技術を学び続け、常に最適なアーキテクチャを選択できるチームであり続けます。</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="services">
+      <div class="container">
+        <div class="reveal">
+          <p class="section-label">Services</p>
+          <h2 class="section-title">事業内容</h2>
+          <p class="section-lead">戦略立案からプロダクト開発、インフラ構築、運用保守まで。ワンストップでご支援します。</p>
+        </div>
+        <div class="card-grid">
+          <article class="card reveal">
+            <div class="card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></div>
+            <h3>Webアプリケーション開発</h3>
+            <p>業務システムからSaaSプロダクトまで、モダンな技術でスケーラブルなWebアプリを構築します。</p>
+            <div class="tags"><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">TypeScript</span></div>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
+            <h3>モバイルアプリ開発</h3>
+            <p>iOS / Android 両対応のネイティブ・クロスプラットフォームアプリを、UXにこだわって開発します。</p>
+            <div class="tags"><span class="tag">Swift</span><span class="tag">Kotlin</span><span class="tag">Flutter</span></div>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H8a5 5 0 1 1 1.6-9.74A6 6 0 0 1 21 11.5 3.5 3.5 0 0 1 17.5 19z"/></svg></div>
+            <h3>クラウドインフラ構築</h3>
+            <p>AWS・Google Cloud・Azure を活用し、セキュアで高可用なインフラを IaC で設計・構築します。</p>
+            <div class="tags"><span class="tag">AWS</span><span class="tag">Terraform</span><span class="tag">Kubernetes</span></div>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
+            <h3>AI・データ活用</h3>
+            <p>生成AIの業務組み込みやデータ基盤構築、機械学習モデルの開発で意思決定を加速します。</p>
+            <div class="tags"><span class="tag">LLM</span><span class="tag">Python</span><span class="tag">BigQuery</span></div>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+            <h3>DXコンサルティング</h3>
+            <p>現状業務の分析からIT戦略の策定、ロードマップ作成まで、変革の第一歩を共に描きます。</p>
+            <div class="tags"><span class="tag">業務分析</span><span class="tag">PoC</span><span class="tag">IT戦略</span></div>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <h3>運用・保守サポート</h3>
+            <p>24時間365日の監視体制と継続的な改善提案で、リリース後もシステムの成長を支えます。</p>
+            <div class="tags"><span class="tag">SRE</span><span class="tag">監視</span><span class="tag">セキュリティ</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats" aria-label="実績数値">
+      <div class="container stats-grid">
+        <div><div class="stat-num"><span data-count="200">0</span><small>+</small></div><div class="stat-label">支援企業数</div></div>
+        <div><div class="stat-num"><span data-count="450">0</span><small>+</small></div><div class="stat-label">開発プロジェクト</div></div>
+        <div><div class="stat-num"><span data-count="98">0</span><small>%</small></div><div class="stat-label">顧客継続率</div></div>
+        <div><div class="stat-num"><span data-count="120">0</span><small>名</small></div><div class="stat-label">エンジニア数</div></div>
+      </div>
+    </section>
+
+    <!-- Works -->
+    <section id="works">
+      <div class="container">
+        <div class="reveal">
+          <p class="section-label">Works</p>
+          <h2 class="section-title">導入事例</h2>
+          <p class="section-lead">さまざまな業界のお客様とともに、課題解決に取り組んできました。（掲載事例はすべて架空のものです）</p>
+        </div>
+        <div class="works-grid">
+          <article class="work reveal">
+            <div class="work-thumb" style="background:linear-gradient(135deg,#2563eb,#7c3aed)">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.8h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+            </div>
+            <div class="work-body">
+              <span class="work-cat">小売 / EC</span>
+              <h3>大手アパレルECのリプレイスで売上32%向上</h3>
+              <p>レガシーなECサイトをヘッドレス構成に刷新。表示速度を3倍に改善し、CVRを大幅に向上させました。</p>
+            </div>
+          </article>
+          <article class="work reveal">
+            <div class="work-thumb" style="background:linear-gradient(135deg,#0891b2,#10b981)">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <div class="work-body">
+              <span class="work-cat">医療 / ヘルスケア</span>
+              <h3>オンライン診療アプリを4ヶ月でリリース</h3>
+              <p>予約・ビデオ通話・決済を一体化したアプリを短期間で開発。現在30万人以上が利用しています。</p>
+            </div>
+          </article>
+          <article class="work reveal">
+            <div class="work-thumb" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 15l3-3 3 3 4-5"/></svg>
+            </div>
+            <div class="work-body">
+              <span class="work-cat">製造業</span>
+              <h3>生成AIで設計文書の検索時間を80%削減</h3>
+              <p>社内に散在する技術文書をRAGで横断検索できるAIアシスタントを構築し、ナレッジ活用を促進しました。</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flow -->
+    <section id="flow" class="flow">
+      <div class="container">
+        <div class="reveal">
+          <p class="section-label">Flow</p>
+          <h2 class="section-title">開発の流れ</h2>
+          <p class="section-lead">お問い合わせから運用まで、専任チームが一貫してサポートします。</p>
+        </div>
+        <div class="flow-steps">
+          <div class="step reveal"><h4>ヒアリング</h4><p>課題や目標、予算感を丁寧にお伺いします。</p></div>
+          <div class="step reveal"><h4>ご提案・お見積り</h4><p>最適な技術構成とスケジュールをご提案します。</p></div>
+          <div class="step reveal"><h4>設計・プロトタイプ</h4><p>UI/UXと設計を固め、動くもので認識を合わせます。</p></div>
+          <div class="step reveal"><h4>開発・テスト</h4><p>2週間スプリントで進捗を可視化しながら開発します。</p></div>
+          <div class="step reveal"><h4>リリース・運用</h4><p>リリース後も改善を重ね、継続的に価値を届けます。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- News -->
+    <section id="news">
+      <div class="container">
+        <div class="reveal">
+          <p class="section-label">News</p>
+          <h2 class="section-title">お知らせ</h2>
+        </div>
+        <div class="news-list reveal">
+          <a href="#news" class="news-item"><span class="news-date">2026.10.15</span><span class="news-tag">プレス</span><span class="news-title">生成AI導入支援パッケージ「cloudii AI Start」の提供を開始しました</span></a>
+          <a href="#news" class="news-item"><span class="news-date">2026.09.01</span><span class="news-tag">お知らせ</span><span class="news-title">福岡オフィスを開設しました</span></a>
+          <a href="#news" class="news-item"><span class="news-date">2026.07.20</span><span class="news-tag">イベント</span><span class="news-title">「Cloud Native Days 2026」にゴールドスポンサーとして出展しました</span></a>
+          <a href="#news" class="news-item"><span class="news-date">2026.04.01</span><span class="news-tag">採用</span><span class="news-title">2027年度 新卒エンジニア採用のエントリー受付を開始しました</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact">
+      <div class="container contact-grid">
+        <div class="company-info reveal">
+          <p class="section-label">Contact</p>
+          <h2 class="section-title">お問い合わせ</h2>
+          <p class="section-lead">開発のご相談、お見積りのご依頼など、お気軽にお問い合わせください。2営業日以内に担当者よりご連絡いたします。</p>
+          <dl>
+            <dt>会社名</dt><dd>cloudii・technologies 株式会社</dd>
+            <dt>設立</dt><dd>2015年4月</dd>
+            <dt>代表者</dt><dd>代表取締役 雲井 拓海</dd>
+            <dt>所在地</dt><dd>〒100-0000 東京都千代田区丸の内0-0-0 クラウドタワー 12F</dd>
+            <dt>従業員数</dt><dd>150名（2026年10月時点）</dd>
+            <dt>TEL</dt><dd>03-0000-0000</dd>
+          </dl>
+        </div>
+        <form class="reveal" id="contactForm" novalidate>
+          <div class="form-row">
+            <div><label for="name">お名前<span class="req">必須</span></label><input id="name" name="name" type="text" placeholder="山田 太郎" required></div>
+            <div><label for="company">会社名</label><input id="company" name="company" type="text" placeholder="株式会社〇〇"></div>
+          </div>
+          <div><label for="email">メールアドレス<span class="req">必須</span></label><input id="email" name="email" type="email" placeholder="example@company.jp" required></div>
+          <div>
+            <label for="topic">ご相談内容</label>
+            <select id="topic" name="topic">
+              <option>新規開発のご相談</option>
+              <option>既存システムの改修・リプレイス</option>
+              <option>AI・データ活用</option>
+              <option>採用について</option>
+              <option>その他</option>
+            </select>
+          </div>
+          <div><label for="message">メッセージ<span class="req">必須</span></label><textarea id="message" name="message" placeholder="ご相談内容をご記入ください" required></textarea></div>
+          <button type="submit" class="btn btn-primary">送信する</button>
+          <div class="form-message" id="formMessage" role="status"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <a href="#top" class="logo">
+          <span class="logo-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H8a5 5 0 1 1 1.6-9.74A6 6 0 0 1 21 11.5 3.5 3.5 0 0 1 17.5 19z"/></svg>
+          </span>
+          cloudii・technologies
+        </a>
+        <nav class="footer-links" aria-label="フッターナビゲーション">
+          <a href="#about">会社概要</a>
+          <a href="#services">事業内容</a>
+          <a href="#works">導入事例</a>
+          <a href="#news">お知らせ</a>
+          <a href="#contact">お問い合わせ</a>
+        </nav>
+      </div>
+      <p class="copyright">© 2026 cloudii・technologies Inc. All rights reserved.（このサイトは架空の企業のサンプルです）</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu
+    const toggle = document.getElementById('menuToggle');
+    const menu = document.getElementById('mobileMenu');
+    toggle.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      menu.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }));
+
+    // Announcement bar: rotate through the news list
+    const announce = document.getElementById('announce');
+    const announceItem = document.getElementById('announceItem');
+    const announceDate = document.getElementById('announceDate');
+    const announceTitle = document.getElementById('announceTitle');
+    const newsData = [...document.querySelectorAll('.news-item')].map(n => ({
+      date: n.querySelector('.news-date').textContent,
+      title: n.querySelector('.news-title').textContent,
+    }));
+    let newsIndex = 0;
+    const rotateTimer = setInterval(() => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      announceItem.classList.add('fade');
+      setTimeout(() => {
+        newsIndex = (newsIndex + 1) % newsData.length;
+        announceDate.textContent = newsData[newsIndex].date;
+        announceTitle.textContent = newsData[newsIndex].title;
+        announceItem.classList.remove('fade');
+      }, 300);
+    }, 5000);
+    document.getElementById('announceClose').addEventListener('click', () => {
+      announce.classList.add('hidden');
+      clearInterval(rotateTimer);
+    });
+
+    // Scroll reveal
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Count-up stats
+    const counter = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target, target = +el.dataset.count, start = performance.now(), dur = 1400;
+        const tick = now => {
+          const p = Math.min((now - start) / dur, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        counter.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-count]').forEach(el => counter.observe(el));
+
+    // Contact form (demo only)
+    const form = document.getElementById('contactForm');
+    const msg = document.getElementById('formMessage');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      msg.textContent = 'お問い合わせありがとうございます。担当者より折り返しご連絡いたします。（デモのため実際には送信されません）';
+      msg.classList.add('show');
+      form.reset();
+    });
+  </script>
+</body>
+</html>
